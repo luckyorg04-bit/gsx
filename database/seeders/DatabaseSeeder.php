@@ -7,13 +7,15 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Seed shared reference data in every environment.
      *
-     * @return void
+     * Demo tenants, sample users and sample school records are created only
+     * in local/development environments. Production schools are created by
+     * the guarded school-registration workflow.
      */
-    public function run()
+    public function run(): void
     {
-
+        // Shared application reference data required by a fresh installation.
         $this->call(UsergroupTableSeeder::class);
         $this->call(CountriesTableSeeder::class);
         $this->call(StatesTableSeeder::class);
@@ -26,45 +28,36 @@ class DatabaseSeeder extends Seeder
         $this->call(QualificationTableSeeder::class);
         $this->call(AbsentReasonsTableSeeder::class);
         $this->call(RolesTableSeeder::class);
-        $this->call(SchoolsTableSeeder::class);  
-        $this->call(SchoolDetailsTableSeeder::class);  
-        $this->call(AcademicYearsTableSeeder::class);  
-        $this->call(SectionsTableSeeder::class);  
-        $this->call(StandardsTableSeeder::class); 
-        $this->call(SubjectsTableSeeder::class); 
-        // Demo accounts use the factory's shared "password" credential.
-        // Never create demo logins or bulk demo users in production.
-        if (app()->environment(['local', 'development', 'testing'])) {
+        $this->call(BooksCategoryTableSeeder::class);
+        $this->call(LeaveTypesTableSeeder::class);
+        $this->call(PageCategoryTableSeeder::class);
+        $this->call(PayCategoryTableSeeder::class);
+        $this->call(PayrollItemTableSeeder::class);
+        $this->call(TransactionTypeTableSeeder::class);
+        $this->call(TrasactionAccountTableSeeder::class);
+        $this->call(TagSeeder::class);
+
+        // Never create demo school accounts or sample records in production.
+        if (app()->environment(['local', 'development'])) {
+            $this->call(SchoolsTableSeeder::class);
+            $this->call(SchoolDetailsTableSeeder::class);
+            $this->call(AcademicYearsTableSeeder::class);
+            $this->call(SectionsTableSeeder::class);
+            $this->call(StandardsTableSeeder::class);
+            $this->call(SubjectsTableSeeder::class);
+
             $this->call(UsersSchoolAdminTableSeeder::class);
             $this->call(UsersTeacherTableSeeder::class);
             $this->call(UsersStudentTableSeeder::class);
             $this->call(TeacherTableSeeder::class);
+
+            $this->call(StandardsLinkTableSeeder::class);
+            $this->call(SubscriptionsTableSeeder::class);
+            $this->call(BooksTableSeeder::class);
+            $this->call(RoleUsersTableSeeder::class);
+            $this->call(HolidaySeeder::class);
+            $this->call(NoticeBoardSeeder::class);
+            $this->call(PayrollSeeder::class);
         }
-
-        $this->call(StandardsLinkTableSeeder::class);
-        $this->call(SubscriptionsTableSeeder::class);
-
-        $this->call(BooksCategoryTableSeeder::class); 
-        $this->call(BooksTableSeeder::class); 
-        // $this->call(AssignmentTableSeeder::class); //test
-        //$this->call(StudentAssignmentTableSeeder::class); //test
-        $this->call(ScholasticGradesTableSeeder::class); 
-        $this->call(NonScholasticGradesTableSeeder::class);
-        $this->call(LeaveTypesTableSeeder::class); 
-        $this->call(RoleUsersTableSeeder::class);
-        $this->call(HolidaySeeder::class);//test //
-        //$this->call(LessonPlanTableSeeder::class);//test
-        $this->call(PageCategoryTableSeeder::class);
-
-        $this->call(PayCategoryTableSeeder::class);
-        $this->call(PayrollItemTableSeeder::class);
-        $this->call(TransactionTypeTableSeeder::class);
-
-        $this->call(TrasactionAccountTableSeeder::class);
-
-        // $this->call(HomeworkSeeder::class); //test
-        $this->call(NoticeBoardSeeder::class); //test
-        $this->call(PayrollSeeder::class); //test
-        $this->call(TagSeeder::class);
     }
 }
