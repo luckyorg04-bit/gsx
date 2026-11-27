@@ -35,13 +35,13 @@ Do not restore the old installer or expose server command execution over HTTP.
 
    Set at least `APP_NAME=GSX`, the real `APP_URL`, `APP_ENV=production`, `APP_DEBUG=false`, a unique database name/user/password, a valid mail transport, and the correct timezone. Never paste secrets into GitHub.
 
-5. Generate the Laravel application key:
+5. Configure the integrations required by school registration before opening `/register`:\n\n   - `GOOGLE_RECAPTCHA_KEY` and `GOOGLE_RECAPTCHA_SECRET` for the required reCAPTCHA validation.\n   - `SMS_GATEWAY_API_KEY`, `SMS_GATEWAY_SENDER_ID` and `SMS_GATEWAY_ROUTE_NO` for the registration OTP sent through MSG91. SMS delivery may incur provider charges.\n   - Working SMTP settings and `MAIL_STATUS=on` if verification and administrator notification emails are required.\n\n   The registration flow requires a valid reCAPTCHA and mobile OTP. The OTP screen now supports a rate-limited resend action and validates expiry. Test delivery with a real test number and provider account in staging.\n\n6. Generate the Laravel application key:
 
    ```bash
    php artisan key:generate
    ```
 
-6. Review pending migrations before applying them. On a genuinely new, empty database only:
+7. Review pending migrations before applying them. On a genuinely new, empty database only:
 
    ```bash
    php artisan migrate --force
@@ -49,23 +49,23 @@ Do not restore the old installer or expose server command execution over HTTP.
 
    Never use `migrate:fresh`, `migrate:refresh`, or `db:wipe` on a database containing data.
 
-7. The `DatabaseSeeder` now limits demo-account and bulk demo-user seeders to `local`, `development` and `testing`; they are skipped in `production`. The default demo school/system data seeders still need a staging review. If you intentionally seed a non-production environment, factory-created demo users use the shared password `password`; never reuse those credentials or expose that environment publicly. Review all seeders before running `db:seed`.
-8. Create the public storage link:
+8. The `DatabaseSeeder` now limits demo-account and bulk demo-user seeders to `local`, `development` and `testing`; they are skipped in `production`. The default demo school/system data seeders still need a staging review. If you intentionally seed a non-production environment, factory-created demo users use the shared password `password`; never reuse those credentials or expose that environment publicly. Review all seeders before running `db:seed`.
+9. Create the public storage link:
 
    ```bash
    php artisan storage:link
    ```
 
-9. If frontend assets must be rebuilt and a lockfile is present:
+10. If frontend assets must be rebuilt and a lockfile is present:
 
    ```bash
    npm ci
    npm run production
    ```
 
-10. Set writable permissions narrowly for `storage/` and `bootstrap/cache/`. Do not make the entire project writable by the web-server user.
-11. Configure HTTPS, Laravel scheduler, queue workers, mail delivery, backups, monitoring and log rotation.
-12. Verify login, role permissions, file uploads, mail, notifications, API routes and critical workflows in staging before production traffic.
+11. Set writable permissions narrowly for `storage/` and `bootstrap/cache/`. Do not make the entire project writable by the web-server user.
+12. Configure HTTPS, Laravel scheduler, queue workers, mail delivery, backups, monitoring and log rotation.
+13. Verify login, role permissions, file uploads, mail, notifications, API routes and critical workflows in staging before production traffic.
 
 ## Rollback and data safety
 
@@ -77,4 +77,4 @@ Do not restore the old installer or expose server command execution over HTTP.
 
 ## Verification status
 
-The repository now includes a GitHub Actions workflow for Composer validation, PHP tests and the frontend build. A workflow file being present is not a passing result; no successful CI run has yet been observed.\n\nThis document is an operator procedure, not evidence that deployment has succeeded. A live database migration, mail test, API integration test, browser walkthrough and production security verification still require an isolated staging environment and credentials. Do not mark GSX production-ready until those checks pass.
+The repository now includes a GitHub Actions workflow for Composer validation, PHP tests and the frontend build. The first complete PHP test run passed; frontend build verification and dependency security audits remain pending. A workflow file being present is not a passing result; no successful CI run has yet been observed.\n\nThis document is an operator procedure, not evidence that deployment has succeeded. A live database migration, mail test, API integration test, browser walkthrough and production security verification still require an isolated staging environment and credentials. Do not mark GSX production-ready until those checks pass.
