@@ -8,7 +8,7 @@ required_files=(
   "tests/TestCase.php"
   "tests/Feature/AuthenticationTest.php"
   "tests/Feature/AuthenticationAdvancedTest.php"
-  "tests/Feature/SchoolStatusLifecycleTest.php"
+  "tests/Feature/SchoolStatusLifecycleTest.php"\n  "tests/Feature/SchoolInitializationTest.php"
   "tests/Feature/TeacherStatusLifecycleTest.php"
 )
 
