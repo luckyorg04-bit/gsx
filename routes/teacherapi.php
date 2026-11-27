@@ -28,8 +28,8 @@ Route::group([
     Route::get('/martialStatus/list', 'SandboxController@getMaritalStatus');
     Route::get('/designation/list', 'SandboxController@getDesignation');
 
-    Route::post('/teacher/login', 'LoginController@login');
-    Route::post('/teacher/logout/devices', 'LoginController@logoutDevices');
+    Route::post('/teacher/login', 'LoginController@login')->middleware('throttle:10,1');
+    Route::post('/teacher/logout/devices', 'LoginController@logoutDevices')->middleware('throttle:5,1');
 });
 
 // lesson-plan-approval
