@@ -30,7 +30,7 @@ Route::get('/schooladmin/{id}/impersonate', 'Auth\ImpersonateController@schoolAd
 Route::get('/emailverification/{token}', 'Auth\EmailVerificationController@emailverification');
 // OTP Verification
 Route::get('/verifyotp', 'OTPController@create');
-Route::post('/verifyotp', 'OTPController@store');
+Route::post('/verifyotp', 'OTPController@store')->middleware('throttle:5,1');
 //siteadmin
 Route::group(['middleware' => ['siteadmin'], 'namespace' => 'Admin'], function () {
     Route::get('/payment/subscription', 'PaymentController@Subscription');
