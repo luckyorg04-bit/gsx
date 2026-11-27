@@ -1,38 +1,48 @@
 <?php
-/**
- * SPDX-License-Identifier: MIT
- * (c) 2025 GegoSoft Technologies and GegoK12 Contributors
- */
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class ApkController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Return the configured Parent Android app release metadata when present.
      */
-    public function parentApp()
+    public function parentApp(): JsonResponse
     {
-        //
-        $file = file_get_contents(public_path('/android-apk/parent_apk_detail.json'));
-        
-        return $file;
+        return $this->releaseMetadata('parent_apk_detail.json', 'Parent');
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Return the configured Teacher Android app release metadata when present.
      */
-    public function teacherApp()
+    public function teacherApp(): JsonResponse
     {
-        //
-        $file = file_get_contents(public_path('/android-apk/teacher_apk_detail.json'));
-        
-        return $file;
+        return $this->releaseMetadata('teacher_apk_detail.json', 'Teacher');
+    }
+
+    private function releaseMetadata(string $filename, string $audience): JsonResponse
+    {
+        $path = public_path('android-apk/' . $filename);
+
+        if (! is_file($path) || ! is_readable($path)) {
+            return response()->json([
+                'status' => 'unavailable',
+                'message' => $audience . ' app release metadata is not configured.',
+            ], 404);
+        }
+
+        $metadata = json_decode((string) file_get_contents($path), true);
+
+        if (! is_array($metadata)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $audience . ' app release metadata is invalid.',
+            ], 500);
+        }
+
+        return response()->json($metadata);
     }
 }
