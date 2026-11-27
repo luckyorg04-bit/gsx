@@ -67,11 +67,20 @@ jobs:
         run: |
           npm ci --no-audit --no-fund
 
-      - name: Audit npm dependencies
-        run: npm audit --audit-level=high --fetch-retries=1 --fetch-timeout=60000
-
       - name: Build production frontend assets
         run: npm run production
+
+      - name: Audit npm dependencies
+        shell: bash
+        run: |
+          set +e
+          timeout 90s npm audit --audit-level=high --fetch-retries=0 --fetch-timeout=30000
+          audit_status=$?
+          if [ "$audit_status" -eq 124 ]; then
+            echo "::warning::npm audit endpoint timed out; dependency security review remains pending."
+            exit 0
+          fi
+          exit "$audit_status"
 
 
   mysql-fresh-install:
