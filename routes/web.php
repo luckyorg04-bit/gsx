@@ -38,10 +38,6 @@ Route::group(['middleware' => ['siteadmin'], 'namespace' => 'Admin'], function (
 });
 
 
-Route::get('/cache-clear', function () {
-    Artisan::call('cache:clear');
-});
-
 Route::get('/{slug}/standardlist','AdmissionController@list');
 Route::get( '/{slug}/admission-form', 'AdmissionController@create' );
 Route::post( '/{slug}/admission-form', 'AdmissionController@store' );
