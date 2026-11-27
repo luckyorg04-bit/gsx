@@ -38,7 +38,10 @@ The current GSX repository contains the Laravel web application and API endpoint
 - Laravel application name, environment template, browser title, favicon and web-app manifest use GSX branding.
 - Shared login/public wordmark and public navigation use the GSX brand partial.
 - Tenant school names and uploaded school logos remain data-driven so each school can retain its own identity.
-- The legacy browser installer has been disabled; a CLI-only installation guide replaces it.\n- Demo-account seeders are restricted to local/development/testing so factory users with the shared demo password are not created in production.\n- Docker development defaults and Nginx protections have been hardened; the compose stack binds published ports to localhost.\n- A GitHub Actions workflow has been added for Composer validation, PHP tests and frontend asset builds; its first successful run is still pending.
+- The legacy browser installer has been disabled; a CLI-only installation guide replaces it.
+- Demo-account seeders are restricted to local/development/testing so factory users with the shared demo password are not created in production.
+- Docker development defaults and Nginx protections have been hardened; the compose stack binds published ports to localhost.
+- A GitHub Actions workflow has been added for Composer validation, PHP tests and frontend asset builds; its first successful run is still pending.
 - Full role-screen, email/notification, image-asset and runtime QA audits remain in progress; this repository is not yet declared production-ready.
 
 ## License
