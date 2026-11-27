@@ -2,31 +2,39 @@
 
 namespace Database\Seeders;
 
-use DB;
+use App\Models\AcademicYear;
+use App\Models\School;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PageCategoryTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
-        //
-        $categories = ['english' , 'general_knowledge' , 'mathematics' , 'others' , 'science' , 'social_studies' , 'tamil']; 
+        $categories = [
+            'english', 'general_knowledge', 'mathematics', 'others',
+            'science', 'social_studies', 'tamil',
+        ];
 
-        foreach ($categories as $category) {
+        foreach (School::where('status', 1)->get() as $school) {
+            $academicYear = AcademicYear::where('school_id', $school->id)
+                ->where('status', 1)
+                ->first();
 
-            DB::table('class_room_page_categories')->Insert([
-                'school_id' 		=>	1, 
-                'academic_year_id'	=>	1, 
-                'name' 				=>	$category,
-                'status'        	=>  '1',
-                'created_at'    	=>	date("Y-m-d H:i:s"),
-                'updated_at'    	=>  date("Y-m-d H:i:s"),
-            ]);
+            if (! $academicYear) {
+                continue;
+            }
+
+            foreach ($categories as $category) {
+                DB::table('class_room_page_categories')->updateOrInsert(
+                    [
+                        'school_id' => $school->id,
+                        'academic_year_id' => $academicYear->id,
+                        'name' => $category,
+                    ],
+                    ['status' => 1, 'created_at' => now(), 'updated_at' => now()]
+                );
+            }
         }
     }
 }
