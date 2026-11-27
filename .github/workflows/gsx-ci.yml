@@ -16,6 +16,7 @@ concurrency:
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
       APP_ENV: testing
       APP_DEBUG: "false"
@@ -29,6 +30,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Prepare test environment file
+        run: cp .env.example .env
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -64,7 +68,7 @@ jobs:
           npm ci --no-audit --no-fund
 
       - name: Audit npm dependencies
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=high --fetch-retries=1 --fetch-timeout=60000
 
       - name: Build production frontend assets
         run: npm run production
@@ -72,6 +76,7 @@ jobs:
 
   mysql-fresh-install:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     services:
       mysql:
         image: mysql:8.4
@@ -104,6 +109,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Prepare test environment file
+        run: cp .env.example .env
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
