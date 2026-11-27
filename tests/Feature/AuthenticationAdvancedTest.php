@@ -315,7 +315,7 @@ class AuthenticationAdvancedTest extends TestCase
     /**
      * Test user group affects dashboard redirect
      */
-    public function test_different_user_groups_redirect_to_different_dashboards(): void
+    public function test_different_user_groups_authenticate_through_shared_entry_route(): void
     {
         $school = School::factory()->create();
 
