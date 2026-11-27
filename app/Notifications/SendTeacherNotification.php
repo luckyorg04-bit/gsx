@@ -73,11 +73,10 @@ class SendTeacherNotification extends Notification implements ShouldQueue
 
         } catch (\Exception $e) {
 
-            Log::error('FCM Notification Error', [
-                'token' => $this->token,
-                'data'  => $this->data,
+            Log::error('GSX FCM notification failed', [
+                'token_fingerprint' => substr(hash('sha256', $this->token), 0, 12),
+                'type' => $this->data['type'] ?? 'Notification',
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
             ]);
 
             // Optional: prevent job from crashing
