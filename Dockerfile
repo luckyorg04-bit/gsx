@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y \
 # ----------------------------
 # Install Node.js (LTS version)
 # ----------------------------
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
     && apt-get install -y nodejs \
     && node -v \
     && npm -v
@@ -36,8 +36,10 @@ WORKDIR /var/www
 RUN git config --system --add safe.directory /var/www
 
 # Ensure correct permissions for Laravel
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 775 /var/www
+# Do not recursively make application source writable. The runtime volume
+# must provide narrowly scoped write access to storage/ and bootstrap/cache/.
+RUN mkdir -p /var/www/storage /var/www/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Switch to www-data user (recommended for Laravel)
+# Switch to the unprivileged PHP-FPM user.
 USER www-data
