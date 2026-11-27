@@ -332,7 +332,7 @@
         </div>
         <div class="flex lg:items-center flex-col lg:flex-row">
           <div class="g-recaptcha" id="feedback-recaptcha" name="feedback-recaptch"
-           data-sitekey="{{ env('GOOGLE_RECAPTCHA_KEY') }}"></div>
+           data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
           @if ($errors->has('g-recaptcha-response'))
             <span class="invalid-feedback text-red-500 text-xs font-semibold" role="alert">
               <p>{{ $errors->first('g-recaptcha-response') }}</p>
