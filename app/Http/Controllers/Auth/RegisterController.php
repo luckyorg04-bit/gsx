@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Mail\EmailVerification;
-use App\Models\AcademicYear;
 use App\Models\Subscription;
 use App\Models\SchoolDetail;
 use Illuminate\Support\Str;
@@ -26,6 +25,7 @@ use App\Models\School;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
+use Throwable;
 
 class RegisterController extends Controller
 {
@@ -65,43 +65,51 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
+    protected function create(array $data): ?User
     {
         DB::beginTransaction();
-        try
-        {
-            $school = $this->createSchool($data);
 
-            //$this->createSchoolDetails($school); //added in observer
+        try {
+            $school = $this->createSchool($data);
+            if (! $school) {
+                throw new \RuntimeException('School record could not be created.');
+            }
 
             $user = $this->createSchoolAdmin($school, $data);
+            if (! $user) {
+                throw new \RuntimeException('School administrator could not be created.');
+            }
 
             $this->createUserProfile($user);
+            if (! Userprofile::where('user_id', $user->id)->exists()) {
+                throw new \RuntimeException('School administrator profile could not be created.');
+            }
 
             $this->createSchoolSubscription($user);
+            if (! Subscription::where('user_id', $user->id)->exists()) {
+                throw new \RuntimeException('School subscription could not be created. Check that the default plan is seeded.');
+            }
 
-            $this->createAcademicYear($school);
-
+            // SchoolObserver creates the current and previous academic years.
             $this->sendEmailVerification($user);
-
             $this->sendAdminNotifyMail($user);
 
             DB::commit();
 
-            Log::channel('slack')->info('A new user registered.', [
-                'Website' => env('APP_URL'),
-                'User_id' => $user->id,
-                'User_name' => $user->name,
-                'School_id' => $user->school_id,
-                'School_name' => $user->school->name,
+            Log::info('GSX school registration completed', [
+                'user_id' => $user->id,
+                'school_id' => $school->id,
             ]);
 
             return $user;
-        }
-        catch(Exception $e)
-        {
+        } catch (\Throwable $e) {
             DB::rollBack();
-            Log::error("Registration Failed");
+
+            Log::error('GSX school registration failed', [
+                'exception' => $e->getMessage(),
+            ]);
+
+            return null;
         }
     }
 
@@ -112,13 +120,18 @@ class RegisterController extends Controller
 
     public function register(RegisterRequest $request)
     {
+        $user = $this->create($request->all());
 
-        event(new Registered($user = $this->create($request->all())));
+        if (! $user) {
+            return back()
+                ->withInput($request->except(['password', 'password_confirmation']))
+                ->withErrors(['registration' => 'Registration could not be completed. Check the application logs and try again.']);
+        }
 
+        event(new Registered($user));
         $this->guard()->login($user);
 
-        if($user->mobile_verified == 0)
-        {
+        if (! $user->mobile_verified) {
             $otpSent = $this->createAuthentication($user, $request, 'register');
 
             if (! $otpSent) {
@@ -132,7 +145,7 @@ class RegisterController extends Controller
         }
 
         return $this->registered($request, $user)
-                        ?: redirect($this->redirectPath());
+            ?: redirect($this->redirectPath());
     }
 
     protected function guard()
@@ -258,27 +271,6 @@ class RegisterController extends Controller
         }
     }
 
-    private function createAcademicYear($school)
-    {
-        try
-        {
-            $detail = AcademicYear::create([
-                'school_id'     =>  $school->id,
-                'name'          =>  '2020-2021',
-                'description'   =>  'Current Academic Year',
-                'start_date'    =>  '2020-06-01',
-                'end_date'      =>  '2021-05-31',
-                'status'        =>  1,
-            ]);
-
-            Log::info('Academic Year for School Id ' . $school->id);
-        }
-        catch(Exception $e)
-        {
-            Log::info($e->getMessage());
-            //dd($e->getMessage());
-        }
-    }
 
     private function sendEmailVerification(User $user)
     {
