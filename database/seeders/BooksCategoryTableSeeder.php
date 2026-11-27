@@ -2,31 +2,25 @@
 
 namespace Database\Seeders;
 
-use DB;
-use Illuminate\Database\Seeder;
 use App\Models\School;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class BooksCategoryTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
-        $schools = School::where('status',1)->get();
-        foreach ($schools as $school) 
-        {
-            $categories = ['Astro Physics', 'Arts', 'Comics', 'Computer Science', 'History', 'Music', 'Technology', 'Magazines', 'Question Bank', 'Projects'];
-            foreach ($categories as $category) 
-            {
-                DB::table('books_category')->Insert([
-                    'school_id'        =>   $school->id,
-                    'category'         =>   $category,
-                    'created_at'       =>   date("Y-m-d H:i:s"),
-                    'updated_at'       =>   date("Y-m-d H:i:s"),
-                ]);
+        $categories = [
+            'Astro Physics', 'Arts', 'Comics', 'Computer Science', 'History',
+            'Music', 'Technology', 'Magazines', 'Question Bank', 'Projects',
+        ];
+
+        foreach (School::where('status', 1)->get() as $school) {
+            foreach ($categories as $category) {
+                DB::table('books_category')->updateOrInsert(
+                    ['school_id' => $school->id, 'category' => $category],
+                    ['created_at' => now(), 'updated_at' => now()]
+                );
             }
         }
     }
