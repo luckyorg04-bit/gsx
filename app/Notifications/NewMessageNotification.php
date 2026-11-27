@@ -44,11 +44,12 @@ class NewMessageNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->subject('New message · GSX')
+            ->greeting('Hello')
+            ->line((string) $this->message)
+            ->action('Open GSX', url('/'))
+            ->salutation('GSX');
     }
-
     /**
      * Get the array representation of the notification.
      *
