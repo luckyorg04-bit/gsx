@@ -1,6 +1,7 @@
 @extends('layouts.empty')
 
 @section('content')
+<div class="w-full mb-4">@include('layouts.partials.logo')</div>
 <div class="container mx-auto flex relative ">
 
             <div class="w-full lg:w-1/3 mx-auto bg-white shadow border border-grey p-5">
