@@ -32,15 +32,17 @@ class DatabaseSeeder extends Seeder
         $this->call(SectionsTableSeeder::class);  
         $this->call(StandardsTableSeeder::class); 
         $this->call(SubjectsTableSeeder::class); 
-        //$this->call(UsersTableSeeder::class);  //test
-        $this->call(UsersSchoolAdminTableSeeder::class);
-        $this->call(UsersTeacherTableSeeder::class);  //test
-       $this->call(StandardsLinkTableSeeder::class); //test //
-        $this->call(UsersStudentTableSeeder::class);  //test
+        // Demo accounts use the factory's shared "password" credential.
+        // Never create demo logins or bulk demo users in production.
+        if (app()->environment(['local', 'development', 'testing'])) {
+            $this->call(UsersSchoolAdminTableSeeder::class);
+            $this->call(UsersTeacherTableSeeder::class);
+            $this->call(UsersStudentTableSeeder::class);
+            $this->call(TeacherTableSeeder::class);
+        }
 
-        $this->call(SubscriptionsTableSeeder::class);  //test //
-
-        $this->call(TeacherTableSeeder::class); //test //
+        $this->call(StandardsLinkTableSeeder::class);
+        $this->call(SubscriptionsTableSeeder::class);
 
         $this->call(BooksCategoryTableSeeder::class); 
         $this->call(BooksTableSeeder::class); 
