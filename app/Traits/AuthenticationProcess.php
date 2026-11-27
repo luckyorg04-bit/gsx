@@ -48,6 +48,7 @@ trait AuthenticationProcess
             if (! is_string($smsResponse)
                 || trim($smsResponse) === ''
                 || str_starts_with($smsResponse, 'cURL Error')
+                || preg_match('/^(error|invalid|unauthorized|failed)/i', trim($smsResponse)) === 1
                 || (is_array($decodedResponse) && strtolower($decodedResponse['type'] ?? '') === 'error')) {
                 $authentication->delete();
                 Log::warning('GSX registration OTP delivery failed', ['user_id' => $user->id]);
