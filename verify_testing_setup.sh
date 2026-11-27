@@ -8,16 +8,19 @@ required_files=(
   "tests/TestCase.php"
   "tests/Feature/AuthenticationTest.php"
   "tests/Feature/AuthenticationAdvancedTest.php"
-  "tests/Feature/SchoolStatusLifecycleTest.php"\n  "tests/Feature/SchoolInitializationTest.php"
+  "tests/Feature/SchoolStatusLifecycleTest.php"
+  "tests/Feature/SchoolInitializationTest.php"
   "tests/Feature/TeacherStatusLifecycleTest.php"
 )
 
 missing=0
 for file in "${required_files[@]}"; do
   if [[ -f "$file" ]]; then
-    printf 'PASS  %s\n' "$file"
+    printf 'PASS  %s
+' "$file"
   else
-    printf 'FAIL  %s (missing)\n' "$file"
+    printf 'FAIL  %s (missing)
+' "$file"
     missing=1
   fi
 done
