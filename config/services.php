@@ -40,6 +40,10 @@ return [
          'key' => env('TWILIO_KEY'),
          'secret' => env('TWILIO_SECRET')
       ],
+      'recaptcha' => [
+            'site_key' => env('GOOGLE_RECAPTCHA_KEY'),
+            'secret' => env('GOOGLE_RECAPTCHA_SECRET'),
+        ],
       'google_maps' => [
             'key' => env('GOOGLE_MAPS_API_KEY'),
         ]
