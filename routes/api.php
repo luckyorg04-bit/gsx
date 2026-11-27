@@ -2,9 +2,9 @@
 
 @include('teacherapi.php');
 
-Route::post('/parent/login', 'Api\TokenController@issueToken');
+Route::post('/parent/login', 'Api\TokenController@issueToken')->middleware('throttle:10,1');
 
-Route::post('/logout/devices', 'Api\LoginController@logoutDevices');
+Route::post('/logout/devices', 'Api\LoginController@logoutDevices')->middleware('throttle:5,1');
 
 //Route::get('/search/users','Api\Search\UserSearchController@index'); --test route hidden
 
@@ -16,13 +16,13 @@ Route::get('/apk/teacher','Api\ApkController@teacherApp');
 
 //password reset
 
-Route::post('/password/reset', 'Api\UserController@resetPassword');
+Route::post('/password/reset', 'Api\UserController@resetPassword')->middleware('throttle:5,1');
 
-Route::post('/password/store', 'Api\UserController@storePassword');
+Route::post('/password/store', 'Api\UserController@storePassword')->middleware('throttle:5,1');
 
-Route::post('/reset/check', 'Api\UserController@checkReset');
+Route::post('/reset/check', 'Api\UserController@checkReset')->middleware('throttle:5,1');
 
-Route::post('/reset/change/password', 'Api\UserController@resetChangePassword');
+Route::post('/reset/change/password', 'Api\UserController@resetChangePassword')->middleware('throttle:5,1');
 
 Route::get('/school/info', 'Api\SchoolController@schooldetail');
 
