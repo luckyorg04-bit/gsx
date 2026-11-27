@@ -4,7 +4,8 @@ The repository currently contains these feature suites:
 
 - `AuthenticationTest.php` — role login and invalid-credential scenarios.
 - `AuthenticationAdvancedTest.php` — rate limiting, logout, remember-me, and role access checks.
-- `SchoolStatusLifecycleTest.php` — login behavior when a school is active or inactive.\n- `SchoolInitializationTest.php` — school details and academic-year initialization across the June rollover.
+- `SchoolStatusLifecycleTest.php` — login behavior when a school is active or inactive.
+- `SchoolInitializationTest.php` — school details and academic-year initialization across the June rollover.
 - `TeacherStatusLifecycleTest.php` — teacher status lifecycle scenarios.
 
 ## Run the suite
