@@ -32,7 +32,7 @@
         @foreach($staffs as $user)
 
         <div class="card-width w-full lg:w-1/3 md:w-1/3" style="padding: 10px;"><!--  width: 33.33%; -->
-            <div style="margin-top: 10px;box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);border-radius: 10px;background-size: cover;background-position: top;background-repeat: no-repeat;background-color: #fff;"><!--  background: url('/images/id-card-bg.png'); -->
+            <div style="margin-top: 10px;box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);border-radius: 10px;background-size: cover;background-position: top;background-repeat: no-repeat;background-color: #fff;"><!--  background: url('/images/idcardbg.png'); -->
             <!-- border:1px dashed #ccc;   -->
                 <div style="border-radius: 8px;"><!--  background: #ffffff; -->
                     <div style=" background: url('/images/idcardbg.png');background-position: bottom;background-size: cover; border-top-right-radius: 10px;border-top-left-radius: 10px;">
