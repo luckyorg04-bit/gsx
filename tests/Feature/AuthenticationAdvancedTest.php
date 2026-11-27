@@ -143,7 +143,7 @@ class AuthenticationAdvancedTest extends TestCase
 
         $this->actingAs($student)
             ->get('/admin/dashboard')
-            ->assertStatus(403); // Forbidden or redirected
+            ->assertRedirect('/student/dashboard');
     }
 
     /**
@@ -178,13 +178,13 @@ class AuthenticationAdvancedTest extends TestCase
     /**
      * Test email field is required
      */
-    public function test_email_is_required_for_login(): void
+    public function test_login_identifier_is_required(): void
     {
         $response = $this->post('/login', [
             'password' => 'password123',
         ]);
 
-        $response->assertSessionHasErrors('email');
+        $response->assertSessionHasErrors('registration_number');
     }
 
     /**
@@ -202,14 +202,14 @@ class AuthenticationAdvancedTest extends TestCase
     /**
      * Test email must be valid format
      */
-    public function test_email_must_be_valid_format(): void
+    public function test_invalid_login_identifier_is_rejected(): void
     {
         $response = $this->post('/login', [
             'email' => 'invalid-email',
             'password' => 'password123',
         ]);
 
-        $response->assertSessionHasErrors('email');
+        $response->assertSessionHasErrors('registration_number');
     }
 
     /**
