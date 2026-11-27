@@ -39,6 +39,10 @@
             </div>
           </div>
         </form>
+        <form method="POST" action="{{ url('/verifyotp/resend') }}" class="mt-3 text-center">
+          @csrf
+          <button type="submit" class="text-sm underline text-gray-700" id="resend-otp">{{ __('Resend OTP') }}</button>
+        </form>
         @endif
       </div>
     </div>
