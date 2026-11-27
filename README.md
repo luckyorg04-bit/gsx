@@ -2,7 +2,7 @@
 
 GSX is a self-hosted school management platform for school administrators, teachers, parents and operational staff.
 
-This repository is a fork of the GegoK12 project. The upstream MIT license and copyright notice are retained in `LICENSE`. Review third-party dependency and asset licenses before redistribution.
+This repository is a fork of the GegoK12 project. The upstream MIT license and copyright notice are retained in `LICENSE`. Review third-party dependency and asset licenses before redistribution. GSX is an independent project name; do not imply upstream endorsement.
 
 ## Technology
 
@@ -10,39 +10,36 @@ This repository is a fork of the GegoK12 project. The upstream MIT license and c
 - PHP 8.4+
 - MySQL
 - Composer
-- Node.js 24 + npm for frontend asset compilation
+- Node.js/npm for frontend asset compilation
 - Optional Redis
 
 ## Server requirements
 
-Required PHP extensions include PDO/MySQL, mbstring, OpenSSL, tokenizer, JSON, cURL, fileinfo, GD, BCMath, XML and ZIP. Configure the web server document root to the `public/` directory. Ensure `storage/` and `bootstrap/cache/` are writable by the web-server user.
+Required PHP extensions include PDO/MySQL, mbstring, OpenSSL, tokenizer, JSON, cURL, fileinfo, GD, BCMath, XML and ZIP. Configure the web server document root to the `public/` directory. Ensure `storage/` and `bootstrap/cache/` are writable by the web-server user, using least-privilege permissions.
 
-## Local / server setup
+## Installation
 
-1. Clone this repository and enter the project directory.
-2. Install PHP dependencies: `composer install --no-dev --optimize-autoloader`.
-3. Create environment file: `cp .env.example .env`.
-4. Set `APP_NAME=GSX`, the production `APP_URL`, database credentials, mail settings and required integrations in `.env`.
-5. Generate the application key: `php artisan key:generate`.
-6. Run database migrations and seeders only after reviewing the project's installation flow and confirming the target database is empty/backed up.
-7. Create the public storage link: `php artisan storage:link`.
-8. Build frontend assets: `npm ci && npm run production`.
-9. Set `APP_ENV=production` and `APP_DEBUG=false`, then clear/rebuild Laravel caches.
-10. Configure HTTPS, scheduled tasks, queue workers, backups and monitoring before production use.
+The legacy browser installer is intentionally disabled. It previously exposed Composer/Artisan execution over HTTP and ran `migrate:fresh`, which can drop existing database tables and data. Use the reviewed CLI-first procedure in [docs/GSX-INSTALLATION.md](docs/GSX-INSTALLATION.md). Do not enable the old web installer or run destructive migrations on a database containing data.
 
-> Important: Never commit a real `.env`, application key, database password, Firebase credential, cloud key or other secret. The values in `.env.example` are placeholders only.
+## Production safety
+
+- Never commit a real `.env`, application key, database password, Firebase credential, cloud key or other secret.
+- Use `APP_ENV=production` and `APP_DEBUG=false`.
+- Use a dedicated database and least-privilege database user.
+- Review migrations and seeders before running them; default demo credentials must be changed.
+- Configure HTTPS, backups, restore testing, scheduler, queue workers, mail and monitoring before production use.
 
 ## Mobile apps
 
-The current `GSX` repository contains the Laravel web application and API endpoints. Separate Android/iOS Teacher and Parent app project source code was not found in this repository tree. The mobile API integration and official app distribution/source availability must be verified separately before promising branded GSX mobile builds.
+The current GSX repository contains the Laravel web application and API endpoints. Separate Android/iOS Teacher and Parent app project source code was not found in this repository tree. Mobile API integration and official app source/distribution availability must be verified separately before promising branded GSX mobile builds.
 
-## Branding status
+## Branding and audit status
 
-- Laravel application name defaults to GSX.
-- Environment template defaults to GSX and Asia/Kolkata.
-- Shared login/public logo and public navigation use a GSX text wordmark.
-- Browser title, favicon and installable web-app manifest use GSX branding.
-- Dashboard, email, notification, uploaded demo logo and mobile-app branding still require a full UI/asset audit.
+- Laravel application name, environment template, browser title, favicon and web-app manifest use GSX branding.
+- Shared login/public wordmark and public navigation use the GSX brand partial.
+- Tenant school names and uploaded school logos remain data-driven so each school can retain its own identity.
+- The legacy browser installer has been disabled pending a safe, reviewed deployment workflow.
+- Full role-screen, email/notification, image-asset and runtime QA audits remain in progress; this repository is not yet declared production-ready.
 
 ## License
 
