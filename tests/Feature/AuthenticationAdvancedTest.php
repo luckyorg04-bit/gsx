@@ -178,13 +178,13 @@ class AuthenticationAdvancedTest extends TestCase
     /**
      * Test email field is required
      */
-    public function test_login_identifier_is_required(): void
+    public function test_email_identifier_is_required(): void
     {
         $response = $this->post('/login', [
             'password' => 'password123',
         ]);
 
-        $response->assertSessionHasErrors('registration_number');
+        $response->assertSessionHasErrors('email');
     }
 
     /**
@@ -209,7 +209,7 @@ class AuthenticationAdvancedTest extends TestCase
             'password' => 'password123',
         ]);
 
-        $response->assertSessionHasErrors('registration_number');
+        $response->assertSessionHasErrors('email');
     }
 
     /**
