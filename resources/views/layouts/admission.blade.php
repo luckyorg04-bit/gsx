@@ -12,9 +12,9 @@
                 <div class="bg-white shadow py-3">
                     <div class="container mx-auto px-3 lg:px-0">
                         <div>
-                            <!-- <a href="{{ url('/') }}">
-                                <img src="{{ asset('images/gego_k12.png') }}" class="inline-block" style="height:55px;" alt="GegoK12 Logo">
-                            </a> -->
+                            <a href="{{ url('/') }}" aria-label="{{ config('app.name', 'GSX') }} home">
+                                @include('layouts.partials.logo')
+                            </a>
                         </div>
                     </div>
                 </div>
