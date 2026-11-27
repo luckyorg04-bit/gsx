@@ -1,4 +1,11 @@
-#composer dump-autoload
-npm install
-php artisan migrate:fresh
-php artisan db:seed
+#!/bin/sh
+set -eu
+
+cat <<'NOTICE'
+The legacy testinstall.sh script has been retired.
+It previously ran migrate:fresh and db:seed without safeguards.
+Use the isolated test database and the reviewed CLI instructions instead:
+  php artisan test
+NOTICE
+
+exit 1
