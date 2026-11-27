@@ -31,7 +31,7 @@ The legacy browser installer is intentionally disabled. It previously exposed Co
 
 ## Mobile apps
 
-The current GSX repository contains the Laravel web application and API endpoints. Separate Android/iOS Teacher and Parent app project source code was not found in this repository tree. Mobile API integration and official app source/distribution availability must be verified separately before promising branded GSX mobile builds.
+The current GSX repository contains the Laravel web application and API endpoints. Separate Android/iOS Teacher and Parent app source, APK files and the `public/android-apk/*_apk_detail.json` release metadata were not found in this repository tree. The API now returns an explicit 404 when release metadata is not configured. Mobile API integration and official app source/distribution availability must be verified separately before promising branded GSX mobile builds.
 
 ## Branding and audit status
 
