@@ -5,12 +5,10 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Facades\Auth;
 use App\Models\Authentication;
 use App\Traits\MSG91;
 use App\Models\User;
 use Carbon\Carbon;
-use Exception;
 use Log;
 
 trait AuthenticationProcess
@@ -25,41 +23,46 @@ trait AuthenticationProcess
      * @param string $type Authentication type (e.g., register, login)
      * @return void
      */
-    public function createAuthentication($user,$request,$type)
+    public function createAuthentication($user, $request, $type): bool
     {
-        try
-        {
-            if( $user->mobile_no !=null ) 
-            { 
-                $otp = random_int(100000, 999999);
-                $expiry = Carbon::now()->addMinutes(5);
-                //$expiry = Carbon::now()->addDay(1); //for test
+        try {
+            if (! $user->mobile_no) {
+                return false;
+            }
 
-                $authentication             =   new Authentication;
+            $otp = random_int(100000, 999999);
+            $authentication = new Authentication();
+            $authentication->user_id = $user->id;
+            $authentication->type = $type;
+            $authentication->token = $otp;
+            $authentication->status = 0;
+            $authentication->expires_on = Carbon::now()->addMinutes(5);
+            $authentication->ip_address = $request instanceof \Illuminate\Http\Request
+                ? $request->ip()
+                : request()->ip();
+            $authentication->save();
 
-                $authentication->user_id    =   $user->id;
-                $authentication->type       =   $type;
-                $authentication->token      =   $otp;
-                $authentication->status     =   0;
-                $authentication->expires_on =   $expiry;
-                if($request != '')
-                {
-                    $authentication->ip_address = $request->ip();
-                }
-                else
-                {
-                    $authentication->ip_address = \Request::ip();
-                }
-                $authentication->save();
-                                    
-                $this->getOTP($otp,$user->mobile_no);
+            $smsResponse = $this->getOTP($otp, $user->mobile_no);
+            $decodedResponse = is_string($smsResponse) ? json_decode($smsResponse, true) : null;
 
-                \Session::put('successmessage',trans('messages.otp_success_msg'));
-            }  
-        }
-        catch(\\Throwable $e)
-        {
-            Log::error('GSX OTP creation failed', ['user_id' => $user->id ?? null, 'exception' => $e->getMessage()]);
+            if (! is_string($smsResponse)
+                || trim($smsResponse) === ''
+                || str_starts_with($smsResponse, 'cURL Error')
+                || (is_array($decodedResponse) && strtolower($decodedResponse['type'] ?? '') === 'error')) {
+                $authentication->delete();
+                Log::warning('GSX registration OTP delivery failed', ['user_id' => $user->id]);
+                return false;
+            }
+
+            \Session::put('successmessage', trans('messages.otp_success_msg'));
+
+            return true;
+        } catch (\Throwable $e) {
+            Log::error('GSX OTP creation failed', [
+                'user_id' => $user->id ?? null,
+                'exception' => $e->getMessage(),
+            ]);
+
             return false;
         }
     }
