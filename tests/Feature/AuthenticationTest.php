@@ -92,8 +92,8 @@ class AuthenticationTest extends TestCase
             'password' => 'password123',
         ]);
 
-        // Assert successful login
-        $response->assertRedirect('/admin/dashboard');
+        // Librarians are redirected to their role-specific dashboard.
+        $response->assertRedirect('/library/dashboard');
         $this->assertAuthenticatedAs($librarian);
     }
 
@@ -120,8 +120,8 @@ class AuthenticationTest extends TestCase
             'password' => 'password123',
         ]);
 
-        // Assert successful login
-        $response->assertRedirect('/admin/dashboard');
+        // Students are redirected to their role-specific dashboard.
+        $response->assertRedirect('/student/dashboard');
         $this->assertAuthenticatedAs($student);
     }
 
@@ -148,8 +148,8 @@ class AuthenticationTest extends TestCase
             'password' => 'password123',
         ]);
 
-        // Assert successful login
-        $response->assertRedirect('/admin/dashboard');
+        // Teachers are redirected to their role-specific dashboard.
+        $response->assertRedirect('/teacher/dashboard');
         $this->assertAuthenticatedAs($teacher);
     }
 
@@ -176,8 +176,8 @@ class AuthenticationTest extends TestCase
             'password' => 'password123',
         ]);
 
-        // Assert successful login
-        $response->assertRedirect('/admin/dashboard');
+        // Accountants are redirected to their role-specific dashboard.
+        $response->assertRedirect('/accountant/dashboard');
         $this->assertAuthenticatedAs($accountant);
     }
 
