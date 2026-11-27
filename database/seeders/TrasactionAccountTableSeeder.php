@@ -2,29 +2,35 @@
 
 namespace Database\Seeders;
 
-use DB;
+use App\Models\School;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TrasactionAccountTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
-        //
-        DB::table('transaction_accounts')->insert([
-            'school_id'     =>  '1',
-            'user_id'       =>  '1',
-            'account_number'=>'348738747833',
-            'ifsc_code'     =>'CASH123',
-            'name'          => 'Cash Account',
-            'key'           => 'CA',
-            'created_at'    => date("Y-m-d H:i:s"),
-            'updated_at'    => date("Y-m-d H:i:s"), 
-        ]);
+        foreach (School::where('status', 1)->get() as $school) {
+            $admin = User::where('school_id', $school->id)
+                ->where('usergroup_id', 3)
+                ->first();
 
+            if (! $admin) {
+                continue;
+            }
+
+            DB::table('transaction_accounts')->updateOrInsert(
+                ['school_id' => $school->id, 'key' => 'CA'],
+                [
+                    'user_id' => $admin->id,
+                    'account_number' => 'GSX-CASH-' . $school->id,
+                    'ifsc_code' => 'CASH',
+                    'name' => 'Cash Account',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+        }
     }
 }
