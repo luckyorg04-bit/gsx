@@ -262,6 +262,31 @@ class AuthenticationAdvancedTest extends TestCase
     }
 
     /**
+     * Test login accepts a registration number in the identifier field.
+     */
+    public function test_user_can_login_with_registration_number(): void
+    {
+        $school = School::factory()->create();
+
+        $user = User::factory()
+            ->schoolAdmin()
+            ->for($school)
+            ->create([
+                'email' => 'registration-login@school.com',
+                'registration_number' => 'GSX-REG-1001',
+                'password' => bcrypt('password123'),
+            ]);
+
+        $response = $this->post('/login', [
+            'email' => 'GSX-REG-1001',
+            'password' => 'password123',
+        ]);
+
+        $response->assertRedirect('/admin/dashboard');
+        $this->assertAuthenticatedAs($user);
+    }
+
+    /**
      * Test concurrent login attempts don't cause conflicts
      */
     public function test_concurrent_logins_work_correctly(): void
