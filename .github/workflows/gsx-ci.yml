@@ -44,7 +44,9 @@ jobs:
         run: composer install --prefer-dist --no-interaction --no-progress
 
       - name: Audit PHP dependencies
-        run: composer audit --no-interaction
+        run: |
+          composer audit --no-interaction --abandoned=ignore
+          echo "::warning::laravel/legacy-factories is abandoned; retain until all legacy factory() call sites are verified and migrated."
 
       - name: Lint application PHP files
         run: find app bootstrap config database routes tests public/installer -type f -name '*.php' -print0 | xargs -0 -n1 php -l
