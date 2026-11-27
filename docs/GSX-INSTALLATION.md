@@ -57,7 +57,13 @@ Do not restore the old installer or expose server command execution over HTTP.
 
    Never use `migrate:fresh`, `migrate:refresh`, or `db:wipe` on a database containing data.
 
-8. The `DatabaseSeeder` now limits demo-account and bulk demo-user seeders to `local`, `development` and `testing`; they are skipped in `production`. The default demo school/system data seeders still need a staging review. If you intentionally seed a non-production environment, factory-created demo users use the shared password `password`; never reuse those credentials or expose that environment publicly. Review all seeders before running `db:seed`.
+8. Review the seeders, then run them once on the new, empty database to load required reference data and the default subscription plan:
+
+   ```bash
+   php artisan db:seed --force
+   ```
+
+   In production, `DatabaseSeeder` loads shared reference data only. Demo schools, sample accounts, sample classes, books, notices and payroll records are restricted to `local` and `development`. The seeders are not designed to be rerun against an existing database because several insert fixed records without upsert protection.
 9. Create the public storage link:
 
    ```bash
