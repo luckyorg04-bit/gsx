@@ -43,6 +43,12 @@ jobs:
       - name: Install PHP dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
+      - name: Audit PHP dependencies
+        run: composer audit --no-interaction
+
+      - name: Lint application PHP files
+        run: find app bootstrap config database routes tests public/installer -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
       - name: Run automated tests
         run: php artisan test
 
@@ -53,7 +59,10 @@ jobs:
 
       - name: Install frontend dependencies
         run: |
-          if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm install --no-audit --no-fund; fi
+          npm ci --no-audit --no-fund
+
+      - name: Audit npm dependencies
+        run: npm audit --audit-level=high
 
       - name: Build production frontend assets
         run: npm run production
