@@ -42,12 +42,12 @@ class SendDeviceNotification extends Notification implements ShouldQueue
                     'message' => $message,
                 ])
                 ->notification(
-                    FcmNotification::create($type, $message)
+                    FcmNotification::create(config('app.name', 'GSX') . ' · ' . $type, $message)
                 )
                 ->custom([
                     'android' => [
                         'notification' => [
-                            'color' => '#0A0A0A',
+                            'color' => '#0f172a',
                             'sound' => 'default',
                         ],
                         'fcm_options' => [
