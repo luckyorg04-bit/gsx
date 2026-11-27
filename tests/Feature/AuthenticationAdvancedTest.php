@@ -341,8 +341,8 @@ class AuthenticationAdvancedTest extends TestCase
                 'password' => 'password123',
             ]);
 
-            // Verify redirect based on role
-            // Note: Adjust based on your actual implementation
+            // Verify the middleware sends each role to its own dashboard.
+            $response->assertRedirect($expectedRedirect);
             $this->assertAuthenticatedAs($user);
 
             // Logout for next iteration
