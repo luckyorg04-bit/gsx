@@ -21,7 +21,7 @@ trait AuthenticationProcess
      * @param \App\Models\User $user Target user
      * @param \Illuminate\Http\Request|string $request Request object or empty string when unavailable
      * @param string $type Authentication type (e.g., register, login)
-     * @return void
+     * @return bool
      */
     public function createAuthentication($user, $request, $type): bool
     {
