@@ -1,11 +1,7 @@
 Options -Indexes
 
-# The old visual installer is intentionally retired. Block direct access to
-# implementation files and all legacy helper endpoints on Apache.
-<FilesMatch "^(run-step|test-connection)\.php$">
-    Require all denied
-</FilesMatch>
-
-<FilesMatch "^(functions|header|footer)\.php$">
+# The retired installer may expose only its inert index.php status page.
+# Block every other PHP implementation/view/helper endpoint on Apache 2.4+.
+<FilesMatch "^(?!index\.php$).+\.php$">
     Require all denied
 </FilesMatch>
