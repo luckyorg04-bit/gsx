@@ -39,12 +39,12 @@ class DatabaseSeeder extends Seeder
             $this->call(BooksCategoryTableSeeder::class);
             $this->call(LeaveTypesTableSeeder::class);
             $this->call(PageCategoryTableSeeder::class);
-            $this->call(TrasactionAccountTableSeeder::class);
             $this->call(SectionsTableSeeder::class);
             $this->call(StandardsTableSeeder::class);
             $this->call(SubjectsTableSeeder::class);
 
             $this->call(UsersSchoolAdminTableSeeder::class);
+            $this->call(TrasactionAccountTableSeeder::class);
             $this->call(UsersTeacherTableSeeder::class);
             $this->call(UsersStudentTableSeeder::class);
             $this->call(TeacherTableSeeder::class);
