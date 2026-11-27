@@ -1,32 +1,6 @@
 <?php
-/**
- * AJAX endpoint for running installation steps
- */
-
-session_start();
-
-header('Content-Type: application/json');
-
-// Define base paths
-define('BASE_PATH', dirname(dirname(__DIR__)));
-define('PUBLIC_PATH', dirname(__DIR__));
-define('INSTALLER_PATH', __DIR__);
-
-require_once INSTALLER_PATH . '/includes/functions.php';
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success' => false, 'message' => 'Invalid request method']);
-    exit;
-}
-
-$step = isset($_POST['step']) ? $_POST['step'] : '';
-
-if (empty($step)) {
-    echo json_encode(['success' => false, 'message' => 'No step specified']);
-    exit;
-}
-
-// Run the installation step
-$result = runInstallationStep($step);
-
-echo json_encode($result);
+// Disabled: the legacy endpoint executed shell commands through unauthenticated HTTP.
+http_response_code(410);
+header('Content-Type: application/json; charset=UTF-8');
+header('Cache-Control: no-store, max-age=0');
+echo json_encode(['success' => false, 'message' => 'The browser-based installer is disabled. Use the reviewed CLI installation guide.']);
