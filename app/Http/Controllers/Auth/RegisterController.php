@@ -272,40 +272,44 @@ class RegisterController extends Controller
     }
 
 
-    private function sendEmailVerification(User $user)
+    private function sendEmailVerification(User $user): void
     {
-        try
-        {
-            if (env('MAIL_STATUS') == 'on')
-            {
-                Mail::to($user->email)->queue(new EmailVerification($user));
-
-                Log::info('Verification Email Sent');
-            }
+        if (env('MAIL_STATUS') !== 'on') {
+            return;
         }
-        catch(Exception $e)
-        {
-            Log::info($e->getMessage());
-            //dd($e->getMessage());
+
+        try {
+            Mail::to($user->email)->queue(new EmailVerification($user));
+            Log::info('GSX verification email queued', ['user_id' => $user->id]);
+        } catch (\Throwable $e) {
+            Log::warning('GSX verification email could not be queued', [
+                'user_id' => $user->id,
+                'exception' => $e->getMessage(),
+            ]);
         }
     }
 
-    private function sendAdminNotifyMail(User $user)
+    private function sendAdminNotifyMail(User $user): void
     {
-        try
-        {
-            $admin = User::where('usergroup_id',1)->first();
-            if (env('MAIL_STATUS') == 'on')
-            {
-                Mail::to($admin->email)->queue(new AdminNotifyNewUserMail($user));
-
-                Log::info('Verification Email Sent');
-            }
+        if (env('MAIL_STATUS') !== 'on') {
+            return;
         }
-        catch(Exception $e)
-        {
-            Log::info($e->getMessage());
-            //dd($e->getMessage());
+
+        $admin = User::where('usergroup_id', 1)->first();
+
+        if (! $admin || ! $admin->email) {
+            Log::info('GSX administrator notification skipped: no super-admin email is configured.');
+            return;
+        }
+
+        try {
+            Mail::to($admin->email)->queue(new AdminNotifyNewUserMail($user));
+            Log::info('GSX new-school notification queued', ['user_id' => $user->id]);
+        } catch (\Throwable $e) {
+            Log::warning('GSX new-school notification could not be queued', [
+                'user_id' => $user->id,
+                'exception' => $e->getMessage(),
+            ]);
         }
     }
 }
