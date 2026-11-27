@@ -186,14 +186,6 @@ trait AuthenticatesUsers
     }
 
     /**
-     * Get the login username to be used by the controller.
-     *
-     * Supports flexible login: users can login with either email or registration_number.
-     * Validates the input to determine which field to use.
-     *
-     * @return string The field name ('email' or 'registration_number')
-     */
-    /**
      * Resolve a login identifier without assuming that it is an email address.
      * Email lookup is case-insensitive; non-email identifiers may be a
      * registration number, mobile number or account name.
@@ -223,6 +215,13 @@ trait AuthenticatesUsers
         })->first();
     }
 
+    /**
+     * Get the login username field used by the authentication guard.
+     *
+     * The login form accepts an email address or a registration number.
+     *
+     * @return string
+     */
     public function username()
     {
        $login = request()->input('email');
