@@ -119,7 +119,15 @@ class RegisterController extends Controller
 
         if($user->mobile_verified == 0)
         {
-            $this->createAuthentication($user,$request,'register');
+            $otpSent = $this->createAuthentication($user, $request, 'register');
+
+            if (! $otpSent) {
+                return redirect('/verifyotp')->with(
+                    'failmessage',
+                    'OTP delivery failed. Check the SMS gateway configuration or use Resend OTP.'
+                );
+            }
+
             return redirect('/verifyotp');
         }
 
