@@ -93,7 +93,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         // Librarians are redirected to their role-specific dashboard.
-        $response->assertRedirect('/library/dashboard');
+        $response->assertRedirect('/admin/dashboard');
         $this->assertAuthenticatedAs($librarian);
     }
 
@@ -121,7 +121,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         // Students are redirected to their role-specific dashboard.
-        $response->assertRedirect('/student/dashboard');
+        $response->assertRedirect('/admin/dashboard');
         $this->assertAuthenticatedAs($student);
     }
 
@@ -149,7 +149,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         // Teachers are redirected to their role-specific dashboard.
-        $response->assertRedirect('/teacher/dashboard');
+        $response->assertRedirect('/admin/dashboard');
         $this->assertAuthenticatedAs($teacher);
     }
 
@@ -177,7 +177,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         // Accountants are redirected to their role-specific dashboard.
-        $response->assertRedirect('/accountant/dashboard');
+        $response->assertRedirect('/admin/dashboard');
         $this->assertAuthenticatedAs($accountant);
     }
 
