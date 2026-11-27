@@ -49,7 +49,7 @@ class BookRequest extends FormRequest
             if (strlen($isbn) === 10) {
                 if (!preg_match('/^\d{9}[\dX]$/', $isbn)) {
                     return false;
-                }'required|unique:books|isbn'
+                }
                 $check = 0;
                 for ($i = 0; $i < 9; $i++) {
                     $check += (10 - $i) * intval($isbn[$i]);
@@ -80,7 +80,7 @@ class BookRequest extends FormRequest
             'author'  => 'required|max:100',
             'category_id'=>'required',
             'book_code'=>'required|unique:books',
-            'isbn_number'=>['required','unique:books',new ISBN],
+            'isbn_number' => 'required|unique:books|isbn',
             'availability'=>'required|numeric',
             'cover_image'=>'required|mimes:jpg,jpeg,png',
            
