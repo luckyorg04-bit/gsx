@@ -116,5 +116,7 @@ jobs:
         run: composer install --prefer-dist --no-interaction --no-progress
       - name: Run a clean MySQL migration and seed
         run: php artisan migrate:fresh --seed --force
+      - name: Run automated tests against MySQL
+        run: php artisan test
       - name: Verify repeatable GSX mail-template seeding
         run: php artisan db:seed --class=MailTemplatesSeeder --force
