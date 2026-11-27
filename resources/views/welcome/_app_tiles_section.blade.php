@@ -5,14 +5,14 @@
   </div>
   <div class="my-2">
     <img src="{{asset('uploads/icons/home/parents.svg')}}" class="w-16 h-16 mx-auto">
-    <h2 class="font-bold text-center mt-3">Mobile App for Parents</h2>
+    <h2 class="font-bold text-center mt-3">Parent Portal</h2>
   </div>
   <div class="my-2">
     <img src="{{asset('uploads/icons/home/teacher_icon.svg')}}" class="w-16 h-16 mx-auto">
-    <h2 class="font-bold text-center mt-3">Web & Mobile App for Teachers</h2>
+    <h2 class="font-bold text-center mt-3">Teacher Workspace</h2>
   </div>
   <div class="my-2">
     <img src="{{asset('uploads/icons/home/school.svg')}}" class="w-16 h-16 mx-auto">
-    <h2 class="font-bold text-center mt-3">Web & Mobile App for Students</h2>
+    <h2 class="font-bold text-center mt-3">Student Portal</h2>
   </div>
 </div>
