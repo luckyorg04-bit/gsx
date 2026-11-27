@@ -104,7 +104,7 @@ trait AuthenticatesUsers
         }, 'You have exited this school');
 
         $this->validate($request, [
-            $this->username() => 'bail|required|string|checkusers|checkactive|checkexit',
+            'email' => 'bail|required|string|checkusers|checkactive|checkexit',
             'password' => 'bail|required|string|checkschool',
         ]);
     }
@@ -181,7 +181,7 @@ trait AuthenticatesUsers
     protected function sendFailedLoginResponse(Request $request)
     {
         throw ValidationException::withMessages([
-            $this->username() => [trans('auth.failed')],
+            'email' => [trans('auth.failed')],
         ]);
     }
 
