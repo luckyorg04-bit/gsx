@@ -65,79 +65,46 @@ trait AuthenticatesUsers
      */
     protected function validateLogin(Request $request)
     {
-        /**
-         * Validator: checkschool
-         * Ensures the user's school is active (status = 1).
-         * SuperAdmins (usergroup_id == 1) bypass school checks.
-         *
-         * @param string $attribute The attribute being validated
-         * @param string $value The value being validated
-         * @param array $parameters Additional parameters
-         * @param \Illuminate\Validation\Validator $validator The validator instance
-         * @return bool True if school is active or user is superadmin
-         */
-        Validator::extend('checkschool', function ($attribute, $value, $parameters, $validator) {
-            $users = User::orWhere('email', request('email'))
-                ->orWhere('mobile_no', request('email'))
-                ->orWhere('name', request('email'))
-                ->orWhere('registration_number', request('email'))
-                ->first();
+        $login = trim((string) $request->input('email'));
 
-            if ($users->usergroup_id == 1) {
-                return TRUE;
+        Validator::extend('checkschool', function ($attribute, $value, $parameters, $validator) use ($login) {
+            $user = $this->findUserForLogin($login);
+
+            if (! $user) {
+                return false;
             }
 
-            $school = School::IsActive($users->school_id)->exists();
-            return $school == TRUE;
+            if ((int) $user->usergroup_id === 1) {
+                return true;
+            }
+
+            return School::IsActive($user->school_id)->exists();
         }, 'Invalid Credentials. You are not in this school');
 
-        /**
-         * Validator: checkusers
-         * Validates that the user exists in the system.
-         *
-         * @param string $attribute The attribute being validated
-         * @param string $value The value being validated
-         * @param array $parameters Additional parameters
-         * @param \Illuminate\Validation\Validator $validator The validator instance
-         * @return bool True if user exists
-         */
-        Validator::extend('checkusers', function ($attribute, $value, $parameters, $validator) {
-            $users = User::where('email', request('email'))->with('userprofile')->first();
-            return $users != null;
+        Validator::extend('checkusers', function ($attribute, $value, $parameters, $validator) use ($login) {
+            return $this->findUserForLogin($login) !== null;
         }, 'Invalid Credentials');
 
-        /**
-         * Validator: checkactive
-         * Validates that the user's profile status is not 'inactive' (suspended).
-         *
-         * @param string $attribute The attribute being validated
-         * @param string $value The value being validated
-         * @param array $parameters Additional parameters
-         * @param \Illuminate\Validation\Validator $validator The validator instance
-         * @return bool True if user is active
-         */
-        Validator::extend('checkactive', function ($attribute, $value, $parameters, $validator) {
-            $users = User::where('email', request('email'))->with('userprofile')->first();
-            return $users->userprofile->status != 'inactive';
+        Validator::extend('checkactive', function ($attribute, $value, $parameters, $validator) use ($login) {
+            $user = $this->findUserForLogin($login);
+
+            return $user !== null
+                && $user->status === 'active'
+                && $user->userprofile !== null
+                && $user->userprofile->status === 'active';
         }, 'You are suspended by site admin');
 
-        /**
-         * Validator: checkexit
-         * Validates that the user's profile status is not 'exit' (no longer works in school).
-         *
-         * @param string $attribute The attribute being validated
-         * @param string $value The value being validated
-         * @param array $parameters Additional parameters
-         * @param \Illuminate\Validation\Validator $validator The validator instance
-         * @return bool True if user status is not 'exit'
-         */
-        Validator::extend('checkexit', function ($attribute, $value, $parameters, $validator) {
-            $users = User::where('email', request('email'))->with('userprofile')->first();
-            return $users->userprofile->status != 'exit';
+        Validator::extend('checkexit', function ($attribute, $value, $parameters, $validator) use ($login) {
+            $user = $this->findUserForLogin($login);
+
+            return $user !== null
+                && $user->status !== 'exit'
+                && $user->userprofile !== null
+                && $user->userprofile->status !== 'exit';
         }, 'You have exited this school');
 
         $this->validate($request, [
-            $this->username() => 'required|string|checkactive|checkexit',
+            $this->username() => 'bail|required|string|checkusers|checkactive|checkexit',
             'password' => 'bail|required|string|checkschool',
         ]);
     }
@@ -163,6 +130,15 @@ trait AuthenticatesUsers
      */
     protected function credentials(Request $request)
     {
+        $user = $this->findUserForLogin($request->input('email'));
+
+        if ($user !== null) {
+            return [
+                'id' => $user->getAuthIdentifier(),
+                'password' => $request->input('password'),
+            ];
+        }
+
         return $request->only($this->username(), 'password');
     }
 
@@ -217,6 +193,36 @@ trait AuthenticatesUsers
      *
      * @return string The field name ('email' or 'registration_number')
      */
+    /**
+     * Resolve a login identifier without assuming that it is an email address.
+     * Email lookup is case-insensitive; non-email identifiers may be a
+     * registration number, mobile number or account name.
+     */
+    protected function findUserForLogin($login): ?User
+    {
+        if (! is_string($login) && ! is_numeric($login)) {
+            return null;
+        }
+
+        $login = trim((string) $login);
+
+        if ($login === '') {
+            return null;
+        }
+
+        $query = User::query()->with('userprofile');
+
+        if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+            return $query->whereRaw('LOWER(email) = ?', [strtolower($login)])->first();
+        }
+
+        return $query->where(function ($builder) use ($login) {
+            $builder->where('registration_number', $login)
+                ->orWhere('mobile_no', $login)
+                ->orWhere('name', $login);
+        })->first();
+    }
+
     public function username()
     {
        $login = request()->input('email');
