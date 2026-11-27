@@ -41,7 +41,7 @@ The current GSX repository contains the Laravel web application and API endpoint
 - Tenant school names and uploaded school logos remain data-driven so each school can retain its own identity.
 - The legacy browser installer implementation has been removed and blocked at Apache/Nginx; a CLI-only installation guide replaces it.
 - Registration now uses fail-closed reCAPTCHA validation, rate-limited OTP verification/resend, secure OTP generation, and GSX-branded SMS. First-school registration requires configured Google reCAPTCHA and MSG91 credentials.
-- Demo-account seeders are restricted to local/development/testing so factory users with the shared demo password are not created in production.
+- Demo schools, demo accounts and sample records are restricted to local/development; production seeding loads shared reference data only.
 - Docker development defaults and Nginx protections have been hardened; the compose stack binds published ports to localhost.
 - A GitHub Actions workflow has been added for Composer validation, PHP tests and frontend asset builds; its first successful run is still pending.
 - Full role-screen, email/notification, image-asset and runtime QA audits remain in progress; this repository is not yet declared production-ready.
