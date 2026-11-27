@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\AcademicYear;
 use App\Models\School;
+use App\Models\User;
+use App\Services\SchoolProvisioningService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -38,6 +40,34 @@ class SchoolInitializationTest extends TestCase
             ]);
 
             $this->assertSame(2, AcademicYear::where('school_id', $school->id)->count());
+        } finally {
+            Carbon::setTestNow();
+        }
+    }
+
+    public function test_school_provisioning_creates_idempotent_school_defaults(): void
+    {
+        Carbon::setTestNow(Carbon::parse('2026-11-27'));
+
+        try {
+            $school = School::factory()->create();
+            $admin = User::factory()->schoolAdmin()->for($school)->create();
+
+            $provisioner = app(SchoolProvisioningService::class);
+            $provisioner->seedDefaults($school, $admin);
+            $provisioner->seedDefaults($school, $admin);
+
+            $this->assertSame(10, \DB::table('books_category')->where('school_id', $school->id)->count());
+            $this->assertSame(6, \DB::table('leave_types')->where('school_id', $school->id)->count());
+            $this->assertSame(7, \DB::table('class_room_page_categories')->where('school_id', $school->id)->count());
+            $this->assertSame(1, \DB::table('transaction_accounts')->where('school_id', $school->id)->count());
+
+            $this->assertDatabaseHas('transaction_accounts', [
+                'school_id' => $school->id,
+                'user_id' => $admin->id,
+                'key' => 'CA',
+                'name' => 'Cash Account',
+            ]);
         } finally {
             Carbon::setTestNow();
         }
