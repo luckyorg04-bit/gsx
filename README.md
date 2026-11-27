@@ -36,9 +36,9 @@ The current GSX repository contains the Laravel web application and API endpoint
 ## Branding and audit status
 
 - Laravel application name, environment template, browser title, favicon and web-app manifest use GSX branding.
-- Shared login/public wordmark and public navigation use the GSX brand partial.
+- Shared login, registration, admission and video layouts use GSX branding; browser titles, favicons and PWA manifest are aligned.\n- Legacy GegoK12/demo logo files were removed from active public asset paths; tenant school logos remain data-driven.
 - Tenant school names and uploaded school logos remain data-driven so each school can retain its own identity.
-- The legacy browser installer has been disabled; a CLI-only installation guide replaces it.
+- The legacy browser installer implementation has been removed and blocked at Apache/Nginx; a CLI-only installation guide replaces it.\n- Registration now uses fail-closed reCAPTCHA validation, rate-limited OTP verification/resend, secure OTP generation, and GSX-branded SMS. First-school registration requires configured Google reCAPTCHA and MSG91 credentials.
 - Demo-account seeders are restricted to local/development/testing so factory users with the shared demo password are not created in production.
 - Docker development defaults and Nginx protections have been hardened; the compose stack binds published ports to localhost.
 - A GitHub Actions workflow has been added for Composer validation, PHP tests and frontend asset builds; its first successful run is still pending.
