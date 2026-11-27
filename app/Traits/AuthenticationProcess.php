@@ -31,7 +31,7 @@ trait AuthenticationProcess
         {
             if( $user->mobile_no !=null ) 
             { 
-                $otp = rand(100000, 999999);
+                $otp = random_int(100000, 999999);
                 $expiry = Carbon::now()->addMinutes(5);
                 //$expiry = Carbon::now()->addDay(1); //for test
 
@@ -57,10 +57,10 @@ trait AuthenticationProcess
                 \Session::put('successmessage',trans('messages.otp_success_msg'));
             }  
         }
-        catch(Exception $e)
+        catch(\\Throwable $e)
         {
-            Log::info($e->getMessage());
-            dd($e->getMessage());
+            Log::error('GSX OTP creation failed', ['user_id' => $user->id ?? null, 'exception' => $e->getMessage()]);
+            return false;
         }
     }
 
