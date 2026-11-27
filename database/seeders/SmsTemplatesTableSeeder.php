@@ -17,7 +17,7 @@ class SmsTemplatesTableSeeder extends Seeder
       //
         DB::table('sms_templates')->insert([
             'name'          => 'Event',
-            'content'       => 'Hi..Your event has been scheduled on :date at :location. For more details log in to church social App. https://churchcms.appsexpress.net',
+            'content'       => 'Your school event is scheduled on :date at :location. Sign in to your GSX school portal for details.',
             'status'        => '1',
             'template_id'   => '1207167890123456790',
             'created_at'    => date("Y-m-d H:i:s"),
