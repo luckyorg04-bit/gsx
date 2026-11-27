@@ -8,6 +8,9 @@
   <div class="card-header uppercase text-gray-200 text-center text-lg font-semibold tracking-widest">{{ __('Register your School here') }}</div>
 
   <div class="card-body">
+    @if ($errors->has('registration'))
+      <div class="alert alert-danger" role="alert">{{ $errors->first('registration') }}</div>
+    @endif
 
     @if(\Config::get('settings.register')==1)
       <div class="alert-box danger">
