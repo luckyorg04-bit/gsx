@@ -28,18 +28,18 @@ class DatabaseSeeder extends Seeder
         $this->call(QualificationTableSeeder::class);
         $this->call(AbsentReasonsTableSeeder::class);
         $this->call(RolesTableSeeder::class);
-        $this->call(BooksCategoryTableSeeder::class);
-        $this->call(LeaveTypesTableSeeder::class);
-        $this->call(PageCategoryTableSeeder::class);
         $this->call(PayCategoryTableSeeder::class);
         $this->call(PayrollItemTableSeeder::class);
         $this->call(TransactionTypeTableSeeder::class);
-        $this->call(TrasactionAccountTableSeeder::class);
         $this->call(TagSeeder::class);
 
         // Never create demo school accounts or sample records in production.
         if (app()->environment(['local', 'development'])) {
             $this->call(SchoolsTableSeeder::class);
+            $this->call(BooksCategoryTableSeeder::class);
+            $this->call(LeaveTypesTableSeeder::class);
+            $this->call(PageCategoryTableSeeder::class);
+            $this->call(TrasactionAccountTableSeeder::class);
             $this->call(SectionsTableSeeder::class);
             $this->call(StandardsTableSeeder::class);
             $this->call(SubjectsTableSeeder::class);
