@@ -51,7 +51,7 @@ class SchoolDetailsTableSeeder extends Seeder
         DB::table('school_details')->Insert([
             'school_id'     =>  '1',
             'meta_key'      =>  'school_logo',
-            'meta_value'    =>  '/uploads/demologo.png',
+            'meta_value'    =>  '-',
             'created_at'    =>  date("Y-m-d H:i:s"),
             'updated_at'    =>  date("Y-m-d H:i:s"),
         ]);
