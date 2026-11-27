@@ -41,7 +41,8 @@ The current `GSX` repository contains the Laravel web application and API endpoi
 - Laravel application name defaults to GSX.
 - Environment template defaults to GSX and Asia/Kolkata.
 - Shared login/public logo and public navigation use a GSX text wordmark.
-- Further dashboard, email, notification, favicon, uploaded demo logo and mobile-app branding still require a full UI/asset audit.
+- Browser title, favicon and installable web-app manifest use GSX branding.
+- Dashboard, email, notification, uploaded demo logo and mobile-app branding still require a full UI/asset audit.
 
 ## License
 
