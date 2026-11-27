@@ -35,7 +35,15 @@ Do not restore the old installer or expose server command execution over HTTP.
 
    Set at least `APP_NAME=GSX`, the real `APP_URL`, `APP_ENV=production`, `APP_DEBUG=false`, a unique database name/user/password, a valid mail transport, and the correct timezone. Never paste secrets into GitHub.
 
-5. Configure the integrations required by school registration before opening `/register`:\n\n   - `GOOGLE_RECAPTCHA_KEY` and `GOOGLE_RECAPTCHA_SECRET` for the required reCAPTCHA validation.\n   - `SMS_GATEWAY_API_KEY`, `SMS_GATEWAY_SENDER_ID` and `SMS_GATEWAY_ROUTE_NO` for the registration OTP sent through MSG91. SMS delivery may incur provider charges.\n   - Working SMTP settings and `MAIL_STATUS=on` if verification and administrator notification emails are required.\n\n   The registration flow requires a valid reCAPTCHA and mobile OTP. The OTP screen now supports a rate-limited resend action and validates expiry. Test delivery with a real test number and provider account in staging.\n\n6. Generate the Laravel application key:
+5. Configure the integrations required by school registration before opening `/register`:
+
+   - `GOOGLE_RECAPTCHA_KEY` and `GOOGLE_RECAPTCHA_SECRET` for the required reCAPTCHA validation.
+   - `SMS_GATEWAY_API_KEY`, `SMS_GATEWAY_SENDER_ID` and `SMS_GATEWAY_ROUTE_NO` for the registration OTP sent through MSG91. SMS delivery may incur provider charges.
+   - Working SMTP settings and `MAIL_STATUS=on` if verification and administrator notification emails are required.
+
+   The registration flow requires a valid reCAPTCHA and mobile OTP. The OTP screen now supports a rate-limited resend action and validates expiry. Test delivery with a real test number and provider account in staging.
+
+6. Generate the Laravel application key:
 
    ```bash
    php artisan key:generate
@@ -77,4 +85,6 @@ Do not restore the old installer or expose server command execution over HTTP.
 
 ## Verification status
 
-The repository now includes a GitHub Actions workflow for Composer validation, PHP tests and the frontend build. The first complete PHP test run passed; frontend build verification and dependency security audits remain pending. A workflow file being present is not a passing result; no successful CI run has yet been observed.\n\nThis document is an operator procedure, not evidence that deployment has succeeded. A live database migration, mail test, API integration test, browser walkthrough and production security verification still require an isolated staging environment and credentials. Do not mark GSX production-ready until those checks pass.
+The repository now includes a GitHub Actions workflow for Composer validation, PHP tests and the frontend build. The first complete PHP test run passed; frontend build verification and dependency security audits remain pending. A workflow file being present is not a passing result; the complete test-and-frontend-build workflow has not yet passed.
+
+This document is an operator procedure, not evidence that deployment has succeeded. A live database migration, mail test, API integration test, browser walkthrough and production security verification still require an isolated staging environment and credentials. Do not mark GSX production-ready until those checks pass.
