@@ -89,9 +89,9 @@ trait AuthenticatesUsers
             $user = $this->findUserForLogin($login);
 
             return $user !== null
-                && $user->status === 'active'
+                && $user->status !== 'inactive'
                 && $user->userprofile !== null
-                && $user->userprofile->status === 'active';
+                && $user->userprofile->status !== 'inactive';
         }, 'You are suspended by site admin');
 
         Validator::extend('checkexit', function ($attribute, $value, $parameters, $validator) use ($login) {
