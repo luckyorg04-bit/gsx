@@ -105,5 +105,10 @@ public/uploads/reports/*
 .env.staging
 /.vapor
 .vapor/*
-composer.lock
 public/demo-school
+
+# Keep dependency lockfiles committed for reproducible builds
+
+# Local diagnostics and generated test caches
+/debug.log
+/.phpunit.cache
