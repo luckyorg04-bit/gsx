@@ -90,8 +90,7 @@ trait AuthenticatesUsers
 
             return $user !== null
                 && $user->status !== 'inactive'
-                && $user->userprofile !== null
-                && $user->userprofile->status !== 'inactive';
+                && ($user->userprofile === null || $user->userprofile->status !== 'inactive');
         }, 'You are suspended by site admin');
 
         Validator::extend('checkexit', function ($attribute, $value, $parameters, $validator) use ($login) {
@@ -99,8 +98,7 @@ trait AuthenticatesUsers
 
             return $user !== null
                 && $user->status !== 'exit'
-                && $user->userprofile !== null
-                && $user->userprofile->status !== 'exit';
+                && ($user->userprofile === null || $user->userprofile->status !== 'exit');
         }, 'You have exited this school');
 
         $this->validate($request, [
