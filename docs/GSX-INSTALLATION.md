@@ -49,7 +49,7 @@ Do not restore the old installer or expose server command execution over HTTP.
 
    Never use `migrate:fresh`, `migrate:refresh`, or `db:wipe` on a database containing data.
 
-7. Review every seeder before running it. Do not run `db:seed` until default users, credentials, demo records, role assignments and destructive behavior have been audited. Replace any default credentials immediately.
+7. The `DatabaseSeeder` now limits demo-account and bulk demo-user seeders to `local`, `development` and `testing`; they are skipped in `production`. The default demo school/system data seeders still need a staging review. If you intentionally seed a non-production environment, factory-created demo users use the shared password `password`; never reuse those credentials or expose that environment publicly. Review all seeders before running `db:seed`.
 8. Create the public storage link:
 
    ```bash
@@ -77,4 +77,4 @@ Do not restore the old installer or expose server command execution over HTTP.
 
 ## Verification status
 
-This document is an operator procedure, not evidence that deployment has succeeded. A live database migration, mail test, API integration test, browser walkthrough and production security verification still require an isolated staging environment and credentials. Do not mark GSX production-ready until those checks pass.
+The repository now includes a GitHub Actions workflow for Composer validation, PHP tests and the frontend build. A workflow file being present is not a passing result; no successful CI run has yet been observed.\n\nThis document is an operator procedure, not evidence that deployment has succeeded. A live database migration, mail test, API integration test, browser walkthrough and production security verification still require an isolated staging environment and credentials. Do not mark GSX production-ready until those checks pass.
