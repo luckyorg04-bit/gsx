@@ -19,7 +19,7 @@ Auth::routes();
 Route::get('/teacher/{id}/impersonate', 'Auth\ImpersonateController@impersonate')->middleware('auth', 'schooladmin');
 Route::get('/library/{id}/impersonate', 'Auth\ImpersonateController@librarianimpersonate')->middleware('auth', 'schooladmin');
 Route::get('/student/{id}/impersonate', 'Auth\ImpersonateController@studentimpersonate')->middleware('auth', 'schooladmin');
-Route::get('/teacher/impersonate/stop', 'Auth\ImpersonateController@stopImpersonate');
+Route::get('/teacher/impersonate/stop', 'Auth\ImpersonateController@stopImpersonate')->middleware('auth');
 
 Route::get('/schooladmin/{id}/impersonate', 'Auth\ImpersonateController@schoolAdminimpersonate')->middleware('auth', 'superadmin');
 
