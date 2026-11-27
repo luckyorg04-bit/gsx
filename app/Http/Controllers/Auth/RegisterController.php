@@ -21,6 +21,7 @@ use App\Models\Subscription;
 use App\Models\SchoolDetail;
 use Illuminate\Support\Str;
 use App\Models\Userprofile;
+use App\Services\SchoolProvisioningService;
 use App\Models\School;
 use App\Models\User;
 use Carbon\Carbon;
@@ -85,6 +86,7 @@ class RegisterController extends Controller
                 throw new \RuntimeException('School administrator profile could not be created.');
             }
 
+            app(SchoolProvisioningService::class)->seedDefaults($school, $user);
             $this->createSchoolSubscription($user);
             if (! Subscription::where('user_id', $user->id)->exists()) {
                 throw new \RuntimeException('School subscription could not be created. Check that the default plan is seeded.');
