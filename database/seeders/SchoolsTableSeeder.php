@@ -16,11 +16,11 @@ class SchoolsTableSeeder extends Seeder
     {
         DB::table('schools')->Insert([
             'id'           =>  '1',
-            'name'         =>  'Demo School',
-            'email'        =>  'demoschool@gegok12.com',
-            'phone'        =>  '9500979461',
+            'name'         =>  env('GSX_DEMO_SCHOOL_NAME', 'GSX Demo School'),
+            'email'        =>  env('GSX_DEMO_SCHOOL_EMAIL', 'demo@gsx.local'),
+            'phone'        =>  env('GSX_DEMO_SCHOOL_PHONE', '0000000000'),
             'status'       =>  '1',
-            'slug'         =>  'demo-school',
+            'slug'         =>  'gsx-demo-school',
             'created_at'   =>   date("Y-m-d H:i:s"),
             'updated_at'   =>   date("Y-m-d H:i:s"),
         ]);
