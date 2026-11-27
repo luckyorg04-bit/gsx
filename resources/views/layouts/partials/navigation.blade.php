@@ -13,7 +13,7 @@
                 </a>
                 @else
                 <a class="h-10 object-contain" href="{{ route('dashboard') }}">
-                    <img src="/uploads/demologo.png" class="h-10 w-auto object-cover mr-3">
+                    <img src="{{ asset('favicon/gsx.svg') }}" alt="GSX" class="h-10 w-10 object-contain mr-3">
                 </a>
             @endif
             <a class="text-lg lg:text-3xl font-exo font-medium text-gray-600" href="{{ route('dashboard') }}">
