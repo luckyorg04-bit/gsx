@@ -1,6 +1,7 @@
 @extends('layouts.empty')
 
 @section('content')
+<div class="w-full mb-4">@include('layouts.partials.logo')</div>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
