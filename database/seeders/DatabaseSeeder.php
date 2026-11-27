@@ -40,8 +40,6 @@ class DatabaseSeeder extends Seeder
         // Never create demo school accounts or sample records in production.
         if (app()->environment(['local', 'development'])) {
             $this->call(SchoolsTableSeeder::class);
-            $this->call(SchoolDetailsTableSeeder::class);
-            $this->call(AcademicYearsTableSeeder::class);
             $this->call(SectionsTableSeeder::class);
             $this->call(StandardsTableSeeder::class);
             $this->call(SubjectsTableSeeder::class);
