@@ -1,119 +1,33 @@
 <?php
 /**
- * Gego K12 - Visual Installation Wizard
+ * GSX intentionally disables the legacy browser-based installer.
  *
- * A standalone PHP installer that works without Laravel
- * Handles: Requirements check, Database setup, Primary configuration
- *
- * @version 1.1
+ * The previous installer executed Composer, Artisan, database migrations and
+ * seeders through unauthenticated HTTP requests. It also used migrate:fresh,
+ * which can drop existing tables and data. Do not re-enable this endpoint.
  */
-
-session_start();
-
-// Define base paths
-define('BASE_PATH', dirname(dirname(__DIR__)));
-define('PUBLIC_PATH', dirname(__DIR__));
-define('INSTALLER_PATH', __DIR__);
-
-// Get current step
-$step = isset($_GET['step']) ? (int)$_GET['step'] : 1;
-
-// Check if already installed
-$isInstalled = file_exists(BASE_PATH . '/storage/installed');
-$allowCompleteScreen = ($step === 6 && !empty($_SESSION['installer_finalized']));
-
-if ($step === 6 && !$isInstalled) {
-    header('Location: ?step=1');
-    exit;
-}
-
-if ($isInstalled && !$allowCompleteScreen) {
-    header('Location: ../');
-    exit;
-}
-$error = '';
-$success = '';
-
-// Handle form submissions
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    require_once INSTALLER_PATH . '/includes/functions.php';
-
-    switch ($step) {
-        case 2:
-            // Requirements check - just proceed
-            header('Location: ?step=3');
-            exit;
-            break;
-
-        case 3:
-            // Database configuration
-            $result = saveDatabaseConfig($_POST);
-            if ($result['success']) {
-                $_SESSION['db_configured'] = true;
-                header('Location: ?step=4');
-                exit;
-            } else {
-                $error = $result['message'];
-            }
-            break;
-
-        case 4:
-            // Admin setup
-            $result = saveAdminConfig($_POST);
-            if ($result['success']) {
-                $_SESSION['admin_configured'] = true;
-
-                // Create .env file immediately after saving config
-                $envResult = createEnvFile();
-                if (!$envResult['success']) {
-                    $error = $envResult['message'];
-                } else {
-                    header('Location: ?step=5');
-                    exit;
-                }
-            } else {
-                $error = $result['message'];
-            }
-            break;
-
-        case 5:
-            // Automated installation handled via AJAX - no POST action needed here
-            break;
-    }
-}
-
-// Include the view
-require_once INSTALLER_PATH . '/includes/header.php';
-
-switch ($step) {
-    case 1:
-        require_once INSTALLER_PATH . '/views/welcome.php';
-        break;
-    case 2:
-        require_once INSTALLER_PATH . '/includes/functions.php';
-        require_once INSTALLER_PATH . '/views/requirements.php';
-        break;
-    case 3:
-        require_once INSTALLER_PATH . '/views/database.php';
-        break;
-    case 4:
-        require_once INSTALLER_PATH . '/views/admin.php';
-        break;
-    case 5:
-        // Create .env file before showing the install page
-        require_once INSTALLER_PATH . '/includes/functions.php';
-        $envResult = createEnvFile();
-        if (!$envResult['success']) {
-            $error = $envResult['message'];
-        }
-        require_once INSTALLER_PATH . '/views/install.php';
-        break;
-    case 6:
-        require_once INSTALLER_PATH . '/views/complete.php';
-        unset($_SESSION['installer_finalized']);
-        break;
-    default:
-        require_once INSTALLER_PATH . '/views/welcome.php';
-}
-
-require_once INSTALLER_PATH . '/includes/footer.php';
+http_response_code(410);
+header('Content-Type: text/html; charset=UTF-8');
+header('Cache-Control: no-store, max-age=0');
+?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GSX setup uses the command line</title>
+    <style>
+        body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f4f6f8;color:#172033;margin:0;padding:2rem}
+        main{max-width:680px;margin:8vh auto;background:#fff;padding:2rem;border-radius:16px;box-shadow:0 12px 36px #17203312}
+        h1{margin-top:0} code{background:#eef2f7;padding:.15rem .35rem;border-radius:4px}
+    </style>
+</head>
+<body>
+<main>
+    <h1>GSX installation endpoint disabled</h1>
+    <p>The legacy web installer is disabled because it could execute server commands over HTTP and run destructive database resets.</p>
+    <p>Install GSX using the reviewed command-line deployment procedure in <code>docs/GSX-INSTALLATION.md</code>. Do not expose an installer endpoint on a production server.</p>
+    <p>This endpoint intentionally returns HTTP 410.</p>
+</main>
+</body>
+</html>
