@@ -14,8 +14,7 @@ class MailTemplatesSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('mailtemplates')->insert([
-            'id'            => '1',
+        DB::table('mailtemplates')->updateOrInsert(['id' => '1'], [
             'name'          => 'login',
             'subject'       => 'Logged In',
             'mail_content'  => 'Hi :name <br> 
@@ -24,27 +23,25 @@ class MailTemplatesSeeder extends Seeder
                                 Don"t recognize this activity?  <br>
                                 Please  change password  for your email immediately   <br>
                                 Thanks & Regards <br>                         
-                                Administration Team <br>',
+                                GSX Support Team <br>',
             'status'        => 'active',
             'created_at'    => date("Y-m-d H:i:s"),
             'updated_at'    => date("Y-m-d H:i:s"),
         ]);
 
-        DB::table('mailtemplates')->insert([
-            'id'            => '2',
+        DB::table('mailtemplates')->updateOrInsert(['id' => '2'], [
             'name'          => 'new_user_register',
             'subject'       => 'New User Registration',
             'mail_content'  => 'Hello ! <br> 
                                 New user has registered - :mail. Please login to see details.
                                 Thanks & Regards <br>                         
-                                Administration Team <br>',
+                                GSX Support Team <br>',
             'status'        => 'active',
             'created_at'    => date("Y-m-d H:i:s"),
             'updated_at'    => date("Y-m-d H:i:s"),
         ]);
 
-        DB::table('mailtemplates')->insert([
-            'id'            => '3',
+        DB::table('mailtemplates')->updateOrInsert(['id' => '3'], [
             'name'          => 'reset_password',
             'subject'       => 'Reset Password',
             'mail_content'  => 'Hi :name <br> 
@@ -52,14 +49,13 @@ class MailTemplatesSeeder extends Seeder
                                 <a href= " :resetlink" style="border: none;
                                     color: white; padding: 10px 15px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; background-color: #008CBA;">Reset Password</a> <br>
                                 Thanks & Regards <br> 
-                                Administration Team <br>',
+                                GSX Support Team <br>',
             'status'        => 'active',
             'created_at'    => date("Y-m-d H:i:s"),
             'updated_at'    => date("Y-m-d H:i:s"),
         ]);
 
-        DB::table('mailtemplates')->insert([
-            'id'            => '4',
+        DB::table('mailtemplates')->updateOrInsert(['id' => '4'], [
             'name'          => 'expired_approve_alert',
             'subject'       => 'New Expired Alert',
             'mail_content'  => 'Hi <br>
@@ -75,14 +71,13 @@ class MailTemplatesSeeder extends Seeder
                             :url 
 
                             Thanks & Regards 
-                            Administration Team',
+                            GSX Support Team',
             'status'        => 'active',
             'created_at'    => date("Y-m-d H:i:s"),
             'updated_at'    => date("Y-m-d H:i:s"),
         ]);
 
-        DB::table('mailtemplates')->insert([
-            'id'            => '5',
+        DB::table('mailtemplates')->updateOrInsert(['id' => '5'], [
             'name'          => 'site_expired_mail',
             'subject'       => 'Site Expired Mail ',
             'mail_content'  => 'Hi <br>
@@ -94,14 +89,13 @@ class MailTemplatesSeeder extends Seeder
                       
                             Your site going to expiry within a week 
                             Thanks & Regards 
-                            Administration Team ',
+                            GSX Support Team ',
             'status'        => 'active',
             'created_at'    => date("Y-m-d H:i:s"),
             'updated_at'    => date("Y-m-d H:i:s"),
         ]);
 
-        DB::table('mailtemplates')->insert([
-            'id'            => '6',
+        DB::table('mailtemplates')->updateOrInsert(['id' => '6'], [
             'name'          => 'contact',
             'subject'       => 'Contact',
             'mail_content'  => 'Hi <br>
@@ -116,28 +110,26 @@ class MailTemplatesSeeder extends Seeder
                                   
                             Contact Details Created 
                             Thanks & Regards 
-                            Administration Team ',
+                            GSX Support Team ',
             'status'        => 'active',
             'created_at'    => date("Y-m-d H:i:s"),
             'updated_at'    => date("Y-m-d H:i:s"),
         ]);
 
-        DB::table('mailtemplates')->insert([
-            'id'            => '7',
+        DB::table('mailtemplates')->updateOrInsert(['id' => '7'], [
             'name'          => 'send_mail',
             'subject'       => ' :subject ',
             'mail_content'  => 'Hi :name, <br>
             :message <br>
             <a href= ":attachments" style="border:none; color:white; padding:10px 15px; text-align:center; text-decoration:none; display:inline-block;  font-size:16px; margin:4px 2px; cursor: pointer; background-color:#008CBA;">Click Here</a> <br>
             Thanks & Regards 
-            Administration Team',
+            GSX Support Team',
             'status'        => 'active',
             'created_at'    => date("Y-m-d H:i:s"),
             'updated_at'    => date("Y-m-d H:i:s"),  
         ]);
 
-		DB::table('mailtemplates')->insert([
-            'id'            => '8',
+		DB::table('mailtemplates')->updateOrInsert(['id' => '8'], [
             'name'          => 'calendar_event',
             'subject'       => 'Calendar Event',
             'mail_content'  => 'Hi <br>
@@ -151,15 +143,14 @@ class MailTemplatesSeeder extends Seeder
 
                             New Event Created 
                             Thanks & Regards 
-                            Administration Team ',
+                            GSX Support Team ',
             'status'        => 'active',
             'created_at'    => date("Y-m-d H:i:s"),
             'updated_at'    => date("Y-m-d H:i:s"),
 		]);
 
 
-        DB::table('mailtemplates')->insert([
-            'id'            => '9',
+        DB::table('mailtemplates')->updateOrInsert(['id' => '9'], [
             'name'          => 'event_reminder',
             'subject'       => 'Event Reminder',
             'mail_content'  => 'Hi <br>
@@ -172,57 +163,53 @@ class MailTemplatesSeeder extends Seeder
                             Start Date    - :start_date 
                             End Date      - :end_date
                       
-                            New event has been posted for this church. 
+                            New event has been posted for this school. 
                            
                             Thanks & Regards 
-                            Administration Team ',
+                            GSX Support Team ',
             'status'        => 'active',
             'created_at'    => date("Y-m-d H:i:s"),
             'updated_at'    => date("Y-m-d H:i:s"),
         ]);
 
-        DB::table('mailtemplates')->insert([
-            'id'            => '10',
+        DB::table('mailtemplates')->updateOrInsert(['id' => '10'], [
             'name'          => 'birthday_reminder',
             'subject'       => 'Birthday Wishes',
             'mail_content'  => ':message 
 
                                 Thanks & Regards 
-                                Administration Team',
+                                GSX Support Team',
             'status'        => 'active',
             'created_at'    => date("Y-m-d H:i:s"),
             'updated_at'    => date("Y-m-d H:i:s"),  
         ]);
 
-        DB::table('mailtemplates')->insert([
-            'id'            => '11',
+        DB::table('mailtemplates')->updateOrInsert(['id' => '11'], [
             'name'          => 'email_verification',
             'subject'       => 'Email Verification',
             'mail_content'  => 'Hi :name <br>
-            To verify your accout. <br>
+            To verify your account. <br>
             <a href= ":url" style="border: none;color: white; padding: 10px 15px;text-align: center; text-decoration: none; display: inline-block; font-size: 16px;margin: 4px 2px; cursor: pointer; background-color: #008CBA;">Click here to verify</a> <br>
             Thanks & Regards <br> 
-            Administration Team <br>',
+            GSX Support Team <br>',
             'status'        => 'active',
             'created_at'    => date("Y-m-d H:i:s"),
             'updated_at'    => date("Y-m-d H:i:s"),  
         ]);
 
-        DB::table('mailtemplates')->insert([
-            'id'            => '12',
+        DB::table('mailtemplates')->updateOrInsert(['id' => '12'], [
             'name'          => 'new_message',
             'subject'       => 'Send Mail to User',
             'mail_content'  => 'Hi :name, <br> 
                                 :message
                                 Thanks & Regards <br> 
-                                Administration Team <br>',
+                                GSX Support Team <br>',
             'status'        => 'active',
             'created_at'    => date("Y-m-d H:i:s"),
             'updated_at'    => date("Y-m-d H:i:s"),
         ]);
 
-        DB::table('mailtemplates')->insert([
-            'id'            => '13',
+        DB::table('mailtemplates')->updateOrInsert(['id' => '13'], [
             'name'          => 'room_invitation',
             'subject'       => 'Room Invitation',
             'mail_content'  => 'Hi :name, <br> 
@@ -231,31 +218,29 @@ class MailTemplatesSeeder extends Seeder
                                 :message <br> 
                                 Thanks & Regards <br>
                                 Thanks & Regards <br> 
-                                Administration Team <br>',
+                                GSX Support Team <br>',
             'status'        => 'active',
             'created_at'    => date("Y-m-d H:i:s"),
             'updated_at'    => date("Y-m-d H:i:s"),
         ]);
 
-        DB::table('mailtemplates')->insert([
-            'id'            => '14',
+        DB::table('mailtemplates')->updateOrInsert(['id' => '14'], [
             'name'          => 'change_password',
             'subject'       => 'Change Password',
             'mail_content'  => 'Hi :name <br> 
                                 Your Password is changed successfully. <br> 
                                 Thanks & Regards <br> 
-                                <p>Administration Team <br>',
+                                <p>GSX Support Team <br>',
             'status'        => 'active',
         ]);
 
-        DB::table('mailtemplates')->insert([
-            'id'            => '15',
+        DB::table('mailtemplates')->updateOrInsert(['id' => '15'], [
             'name'          => 'admission_confirmation',
             'subject'       => 'Admission Confirmation Mail',
             'mail_content'  => 'Hi Sir\Madam <br> 
                                 Your Application No. :application_no for the admission in :school_name has been approved. <br> 
                                 Thanks & Regards <br> 
-                                <p>Administration Team <br>',
+                                <p>GSX Support Team <br>',
             'status'        => 'active',
         ]);
 	}

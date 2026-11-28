@@ -603,9 +603,8 @@ ul.course_tabs li.current p {
   background: #033374;
 }
 
-.admin-sidebar li:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(127 29 29 / var(--tw-bg-opacity, 1));
+.admin-sidebar li:hover {
+  background-color: #1e293b;
 }
 
 /*sidebar css end*/
