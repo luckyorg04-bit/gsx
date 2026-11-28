@@ -18,7 +18,7 @@ check() {
 
 env_value() {
   local key="$1"
-  sed -n "s/^\${key}=//p" .env | tail -n 1 | tr -d '\r' | sed -E 's/^["'\'']//; s/["'\'']$//'
+  php -r '$v = parse_ini_file(".env", false, INI_SCANNER_RAW); echo trim($v[$argv[1]] ?? "");' "$key"
 }
 
 has_env() {
