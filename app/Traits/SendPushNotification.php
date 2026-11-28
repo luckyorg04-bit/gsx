@@ -76,7 +76,7 @@ trait SendPushNotification
       $optionBuilder       ->setTimeToLive(60 * 20);
       $notificationBuilder = new PayloadNotificationBuilder($array['type']);
       $notificationBuilder ->setBody($array['message'])
-           ->setTitle($array['type'])
+           ->setTitle(config('app.name', 'GSX') . ' · ' . $array['type'])
            ->setSound('default');
       $dataBuilder          = new PayloadDataBuilder();
        $dataBuilder->addData(['message' => $array['message'],'type'=>$array['type']]);
